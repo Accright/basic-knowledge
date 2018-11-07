@@ -162,16 +162,17 @@ Integer、Short、Byte、Character、Long这几个类的valueOf方法的实现�
 # JAVA中的异常及处理
 ## 简介
 异常本质上是程序上的错误，包括程序逻辑错误和系统错误。比如使用空的引用、数组下标越界、内存溢出错误等，这些都是意外的情况，背离我们程序本身的意图。错误在我们编写程序的过程中会经常发生，包括编译期间和运行期间的错误，在编译期间出现的错误有编译器帮助我们一起修正，然而运行期间的错误便不是编译器力所能及了，并且运行期间的错误往往是难以预料的。假若程序在运行期间出现了错误，如果置之不理，程序便会终止或直接导致系统崩溃，显然这不是我们希望看到的结果。因此，如何对运行期间出现的错误进行处理和补救呢？Java提供了异常机制来进行处理，通过异常机制来处理程序运行期间出现的错误。通过异常机制，我们可以更好地提升程序的健壮性。
-　　在Java中异常被当做对象来处理，根类是java.lang.Throwable类，在Java中定义了很多异常类（如OutOfMemoryError、NullPointerException、IndexOutOfBoundsException等），这些异常类分为两大类：Error和Exception。
-　　Error是无法处理的异常，比如OutOfMemoryError，一般发生这种异常，JVM会选择终止程序。因此我们编写程序时不需要关心这类异常。
-　　Exception，也就是我们经常见到的一些异常情况，比如NullPointerException、IndexOutOfBoundsException，这些异常是我们可以处理的异常。
-　　Exception类的异常包括checked exception和unchecked exception（unchecked exception也称运行时异常RuntimeException，当然这里的运行时异常并不是前面我所说的运行期间的异常，只是Java中用运行时异常这个术语来表示，Exception类的异常都是在运行期间发生的）。
-　　unchecked exception（非检查异常），也称运行时异常（RuntimeException），比如常见的NullPointerException、IndexOutOfBoundsException。对于运行时异常，java编译器不要求必须进行异常捕获处理或者抛出声明，由程序员自行决定。
-　　checked exception（检查异常），也称非运行时异常（运行时异常以外的异常就是非运行时异常），java编译器强制程序员必须进行捕获处理，比如常见的IOExeption和SQLException。对于非运行时异常如果不进行捕获或者抛出声明处理，编译都不会通过。
-　　在Java中，异常类的结构层次图如下图所示：![异常类的结构层次](https://springboot-blog-1256194683.cos.ap-beijing.myqcloud.com/%E5%BC%82%E5%B8%B8%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84.jpg)
-    在Java中，所有异常类的父类是Throwable类，Error类是error类型异常的父类，Exception类是exception类型异常的父类，RuntimeException类是所有运行时异常的父类，RuntimeException以外的并且继承Exception的类是非运行时异常。
-　　典型的RuntimeException包括NullPointerException、IndexOutOfBoundsException、IllegalArgumentException等。
-　　典型的非RuntimeException包括IOException、SQLException等。
+在Java中异常被当做对象来处理，根类是java.lang.Throwable类，在Java中定义了很多异常类（如OutOfMemoryError、NullPointerException、IndexOutOfBoundsException等），这些异常类分为两大类：Error和Exception。
+Error是无法处理的异常，比如OutOfMemoryError，一般发生这种异常，JVM会选择终止程序。因此我们编写程序时不需要关心这类异常。
+Exception，也就是我们经常见到的一些异常情况，比如NullPointerException、IndexOutOfBoundsException，这些异常是我们可以处理的异常。
+Exception类的异常包括checked exception和unchecked exception（unchecked exception也称运行时异常RuntimeException，当然这里的运行时异常并不是前面我所说的运行期间的异常，只是Java中用运行时异常这个术语来表示，Exception类的异常都是在运行期间发生的）。
+unchecked exception（非检查异常），也称运行时异常（RuntimeException），比如常见的NullPointerException、IndexOutOfBoundsException。对于运行时异常，java编译器不要求必须进行异常捕获处理或者抛出声明，由程序员自行决定。
+checked exception（检查异常），也称非运行时异常（运行时异常以外的异常就是非运行时异常），java编译器强制程序员必须进行捕获处理，比如常见的IOExeption和SQLException。对于非运行时异常如果不进行捕获或者抛出声明处理，编译都不会通过。
+在Java中，异常类的结构层次图如下图所示：![异常类的结构层次](https://springboot-blog-1256194683.cos.ap-beijing.myqcloud.com/%E5%BC%82%E5%B8%B8%E7%B1%BB%E7%9A%84%E7%BB%93%E6%9E%84.jpg)
+
+在Java中，所有异常类的父类是Throwable类，Error类是error类型异常的父类，Exception类是exception类型异常的父类，RuntimeException类是所有运行时异常的父类，RuntimeException以外的并且继承Exception的类是非运行时异常。
+典型的RuntimeException包括NullPointerException、IndexOutOfBoundsException、IllegalArgumentException等。
+典型的非RuntimeException包括IOException、SQLException等。
 ## 异常的详解及注意
 参考：[异常的详解及使用](https://www.cnblogs.com/dolphin0520/p/3769804.html).
 # JAVA中的拷贝
@@ -184,7 +185,7 @@ Person person2 = person1;
 这样是无法拷贝对象的，因为只是两个引用（类似于指针）指向了同一个对象而已。
 浅拷贝：只拷贝对象，不拷贝对象的成员变量为另一个对象的情况，步骤如下： 
 1. 被复制的类需要实现Clonenable接口（不实现的话在调用clone方法会抛出CloneNotSupportedException异常) 该接口为标记接口(不含任何方法)
-2. 覆盖clone()方法，访问修饰符设为public。方法中调用super.clone()方法得到需要的复制对象，（native为本地方法)
+2. 覆盖clone()方法，访问修饰符设为public。方法中调用super.clone()方法得到需要的复制对象，（native为本地方法).
 深拷贝：同时拷贝属性为另一个对象的情况。可以使用实现序列化和反序列化的方式实现，类似于创建了两个对象。
 ```java
 package com.lin.test;
