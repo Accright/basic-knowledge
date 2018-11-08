@@ -7,24 +7,24 @@ HttpClient.post(url,param)方式调用
 ## 主要参数表
 全部参数见：[参数](http://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-placeapi)
 全量搜索主要用到的参数如下：
-参数     | 含义
--------- | ----------------
-query  | 检索关键字
-region | 区域
-output | json
-page_size | 分页数
-page_num | 页码数
-ak | 秘钥
-圆形范围搜索主要用到的参数如下：
-参数     | 含义
--------- | ----------------
-query  | 检索关键字
-location | 中心点
-radius | 半径
-output | json
-page_size | 分页数
-page_num | 页码数
-ak | 秘钥
+|参数     | 含义 |
+|-------- | ----------------|
+|query  | 检索关键字 |
+|region | 区域 |
+|output | json |
+|page_size | 分页数 |
+|page_num | 页码数 |
+|ak | 秘钥 |
+圆形范围搜索主要用到的参数如下： 
+|参数     | 含义 |
+|-------- | ----------------|
+|query  | 检索关键字 |
+|location | 中心点 |
+|radius | 半径 |
+|output | json |
+|page_size | 分页数 |
+|page_num | 页码数 |
+|ak | 秘钥 |
 # JS版API
 ## 调用方式
 ### 城市检索
