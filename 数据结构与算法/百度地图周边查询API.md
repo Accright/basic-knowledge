@@ -15,6 +15,7 @@ HttpClient.post(url,param)方式调用
 |page_size | 分页数 |
 |page_num | 页码数 |
 |ak | 秘钥 |
+--------------------- 
 圆形范围搜索主要用到的参数如下： 
 |参数     | 含义 |
 |-------- | ----------------|
@@ -25,6 +26,7 @@ HttpClient.post(url,param)方式调用
 |page_size | 分页数 |
 |page_num | 页码数 |
 |ak | 秘钥 |
+--------------------- 
 # JS版API
 ## 调用方式
 ### 城市检索
