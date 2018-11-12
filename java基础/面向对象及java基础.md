@@ -174,7 +174,7 @@ checked exception（检查异常），也称非运行时异常（运行时异常
 典型的RuntimeException包括NullPointerException、IndexOutOfBoundsException、IllegalArgumentException等。
 典型的非RuntimeException包括IOException、SQLException等。
 ## 异常的详解及注意
-参考：[异常的详解及使用](https://www.cnblogs.com/dolphin0520/p/3769804.html).
+参考：[异常的详解及使用](https://accright.com/article/54).
 # JAVA中的拷贝
 ## 简介
 java中的拷贝就是将目标对象在堆上复制一份，分为深拷贝和浅拷贝两种。直接使用改变引用的方式，例如：
