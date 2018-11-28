@@ -56,3 +56,11 @@ WeakReference<String> wr = new WeakReference<String>(new String("world"));
 新生代与老年代内存分配：
 ![新生代的内存分配](https://springboot-blog-1256194683.cos.ap-beijing.myqcloud.com/%E6%96%B0%E7%94%9F%E4%BB%A3%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D.jpg)
 内存分配一般分配在堆的新生代上，主要分配在Eden Space和From Space，对于大对象则直接分配在老年代上，或在GC过程中，To Space无法存储该对象时，对象也会被移到老年代，或者对象的GC次数到达15次等一定次数，也会被移到老年代的内存空间。当Eden区域和From Space没有足够的地址用来做内存分配时，就会发生GC操作。当然分配规则不是百分百固定的，取决于使用的垃圾收集器组合和JVM的相关参数。
+## Full GC和Minor GC
+全部GC和局部GC的触发条件:一般GC都是执行的MinorGC，即Eden区满时，但是一下情况会触发FullGC：
+1. 调用System.gc时，系统建议执行Full GC，但是不必然执行
+2. 老年代空间不足
+3. 方法区空间不足
+4. 通过Minor GC后进入老年代的平均大小大于老年代的可用内存
+5. 由Eden区、From Space区向To Space区复制时，对象大小大于To Space可用内存，则把该对象转存到老年代，且老年代的可用内存小于该对象大小
+总结就是老年代的空间不足时，会出发全局GC，FullGC
