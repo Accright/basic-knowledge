@@ -53,7 +53,9 @@ jmap是一个重要的工具，查看内存详细信息，可以dump到文件中
 ![jmap](https://img-blog.csdn.net/20180913173852330?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Rlbmdhbm1pbmcxMjE0/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 -F 表示强制执行，live表示收集存活的对象，file存储到某个文件。dump文件下来后，可以使用工具来分析堆内存，包括jmap -histo、mat等
+
 > jmap [-F] histo pid 
+
 ![jmap](https://img-blog.csdn.net/20180913174128525?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Rlbmdhbm1pbmcxMjE0/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 查看堆内存的情况，按照对象数和对象占用的内存排队，可以初步定位到是哪个对象占用过多内存，内存泄漏的地方。后面使用mat工具能分析到哪个来存储的这个对象，也就是GCroot在哪
