@@ -106,3 +106,7 @@ shallow heap为本对象大小，retained heap为实际包含的对象的总大�
 内存泄漏疑点报告，会把可能的内存泄漏点展示，再查看detail，就能看到具体信息。 
 ![MAT](https://img-blog.csdn.net/20180913182146897?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Rlbmdhbm1pbmcxMjE0/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 ![MAT](https://img-blog.csdn.net/20180913182132395?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Rlbmdhbm1pbmcxMjE0/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
+
+
+可参考链接：https://blog.csdn.net/denganming1214/article/details/82692635
