@@ -102,19 +102,25 @@ jstack是比较有用的一个命令，查看线程的情况，包含锁，俗�
 ### MAT
 mat是一个比较强大的分析堆溢出的工具。把之前dump文件导入到工具中。 
 首先看overview。
+
 ![MAT](https://img-blog.csdn.net/20180913180923481?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Rlbmdhbm1pbmcxMjE0/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
 有几个比较重要的信息。 
 1、图中列出的大对象 
 左击list object->with outgoing references，查看次大对象是哪个GCroot。 
+
 ![MAT](https://img-blog.csdn.net/20180913181556416?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Rlbmdhbm1pbmcxMjE0/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
 shallow heap为本对象大小，retained heap为实际包含的对象的总大小。主要看retained heap，一层一层展开，能够看到哪个类中存在存储大对象。 
 2、histogram 
 和jmap -histo和jhat中的类似。 
 3、dominator tree 
 查看各个对象的GCroot，和第一个点类似 
 4、leak suspects 
-内存泄漏疑点报告，会把可能的内存泄漏点展示，再查看detail，就能看到具体信息。 
+内存泄漏疑点报告，会把可能的内存泄漏点展示，再查看detail，就能看到具体信息。
+ 
 ![MAT](https://img-blog.csdn.net/20180913182146897?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Rlbmdhbm1pbmcxMjE0/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
 ![MAT](https://img-blog.csdn.net/20180913182132395?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Rlbmdhbm1pbmcxMjE0/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 
