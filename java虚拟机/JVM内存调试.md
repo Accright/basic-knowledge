@@ -19,31 +19,43 @@ jps -l
 ### jinfo
 jinfo查看java虚拟机的参数配置。 
 使用：
+
 > jinfo pid
+
 ![jinfo](https://img-blog.csdn.net/20180913172615598?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Rlbmdhbm1pbmcxMjE0/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 ### jstat
 jstat查看gc情况和内存中类的信息 
 使用：
+
 > jstat -gc pid 5000 1000 
+
 ![jstat](https://img-blog.csdn.net/20180913172921619?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Rlbmdhbm1pbmcxMjE0/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 C表示总数，U表示used 
 其中S0表示survivor 0，S1表示survivor 1，E表示eden，O表示old老年代，P表示Perm，YGC表示younggc的次数，YGCT表示younggc的总耗时，FGC表示fullgc的次数，FGCT表示fullgc总耗时，GCT表示gc的总耗时。
+
 > jstat -gcutil pid 5000 1000 
+
 ![jstat](https://img-blog.csdn.net/2018091317344633?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Rlbmdhbm1pbmcxMjE0/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 gcutil和gc差不多，只不过不是具体的内存数值，而是占比，内涵和gc类似
+
 > jstack -class pid 5000 1000 
+
 ![jstat](https://img-blog.csdn.net/20180913173601912?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Rlbmdhbm1pbmcxMjE0/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 class展示类的加载信息
 ### jmap
 jmap是一个重要的工具，查看内存详细信息，可以dump到文件中 
 使用：
+
 > jmap [-F] dump:live,format=b,file=/tmp/a pid 
+
 ![jmap](https://img-blog.csdn.net/20180913173852330?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Rlbmdhbm1pbmcxMjE0/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 -F 表示强制执行，live表示收集存活的对象，file存储到某个文件。dump文件下来后，可以使用工具来分析堆内存，包括jmap -histo、mat等
 > jmap [-F] histo pid 
 ![jmap](https://img-blog.csdn.net/20180913174128525?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Rlbmdhbm1pbmcxMjE0/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 查看堆内存的情况，按照对象数和对象占用的内存排队，可以初步定位到是哪个对象占用过多内存，内存泄漏的地方。后面使用mat工具能分析到哪个来存储的这个对象，也就是GCroot在哪
+
 > jmap [-F] heap pid 
+
 ![jmap](https://img-blog.csdn.net/2018091317444960?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Rlbmdhbm1pbmcxMjE0/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 heap能查看当前使用的垃圾收集器是什么和一些参数策略，还有具体的内存分布，一般用不到。参数可以用jinfo，内存分布可以用jstat
 ### jhat
@@ -51,6 +63,7 @@ jhat会分析一个dump文件，然后把结果发布到一个html服务器上�
 使用：
 
 > jhat file 
+
 ![jhat](https://img-blog.csdn.net/20180913174838275?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Rlbmdhbm1pbmcxMjE0/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 返回访问127.0.0.1:7000 查看histogram 
 ![jhat](https://img-blog.csdn.net/20180913174947102?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Rlbmdhbm1pbmcxMjE0/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
@@ -60,6 +73,7 @@ jstack是比较有用的一个命令，查看线程的情况，包含锁，俗�
 
 > jstack [-F] [-l] pid 
 > -l包含锁信息
+
 ![jstack](https://img-blog.csdn.net/20180913175336280?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Rlbmdhbm1pbmcxMjE0/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 ## 外部工具简介
 ### jconsole
@@ -74,6 +88,7 @@ jstack是比较有用的一个命令，查看线程的情况，包含锁，俗�
 
 > -Dcom.sun.management.jmxremote=true 
 > -Dcom.sun.management.jmxremote.port=18080
+
 ### MAT
 mat是一个比较强大的分析堆溢出的工具。把之前dump文件导入到工具中。 
 首先看overview。
