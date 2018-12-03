@@ -192,9 +192,10 @@ class MyThread extends Thread {
     }
 }
 ```
-2. ReadWriteLock
+2. ReadWriteLock：
 ReadWriteLock也是一个接口，主要有两个方法，readlock和writelock，分别用来获取读锁和写锁。
-3. ReentrantReadWriteLock
+3. ReentrantReadWriteLock：
+ReadWriteLock的实现类。
 
 ## Lock和synchronized
 1. Lock是一个接口，synchronized是JAVA的内置关键字
