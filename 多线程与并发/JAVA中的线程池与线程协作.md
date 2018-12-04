@@ -57,8 +57,9 @@ ThreadPoolExcutor继承自AbstractExecutorService，而AbstractExecutorService�
 
 1. 线程池状态：使用volatile关键字声明的变量，当其他线程修改该值时可以直接被各个线程发现（可见性），状态主要有：RUNNING=0：运行状态；SHUTDOWN=1：暂停接受任务状态；STOP=2：停止接受新任务并终止当前任务；TERMINATED=3：所有线程都已销毁且任务队列为空时，标记为TERMINATED状态。
 2. 任务的执行：线程池中的重要成员变量，除了上述构造器中的变量之外，还有以下几个：
-1. ReentrantLock mainLock：线程池的状态锁，涉及到线程池状态改变的操作需要用该锁加锁
-2. HashSet<Worker> workers：工作任务的集合，Worker是一个内部类，封装了Runable任务
+1.ReentrantLock mainLock：线程池的状态锁，涉及到线程池状态改变的操作需要用该锁加锁
+
+2.HashSet<Worker> workers：工作任务的集合，Worker是一个内部类，封装了Runable任务
 
 其中的核心方法便是execute()方法，其源代码如下：
 ```java
@@ -76,9 +77,11 @@ public void execute(Runnable command) {
 }
 ```
 其总体过程如下：
-1. 如果当前线程池中的任务数量小于corePoolSize，创建一个新线程去执行任务
-2. 如果线程数量超过corePoolSize，则将后续任务将加入缓存队列中，轮询该队列等待有空闲线程继续执行
-3. 如果任务队列已满，创建新的线程直接执行，如果线程数量达到maximumPoolSize，则会按照拒绝策略拒绝任务执行，这些线程会在达到keepAliveTime之后终止
+1.如果当前线程池中的任务数量小于corePoolSize，创建一个新线程去执行任务
+
+2.如果线程数量超过corePoolSize，则将后续任务将加入缓存队列中，轮询该队列等待有空闲线程继续执行
+
+3.如果任务队列已满，创建新的线程直接执行，如果线程数量达到maximumPoolSize，则会按照拒绝策略拒绝任务执行，这些线程会在达到keepAliveTime之后终止
 
 3. 线程池的线程初始化：初始化线程池之后，无任务的时候是不会创建线程的，可以使用以下方法直接创建线程:prestartCoreThread,初始化一个核心线程；prestartAllCoreThreads，初始化所有核心线程
 4. 任务缓存队列及排序策略：ArrayBlockingQueue，LinkedBlockingQueue，synchronousQueue，这个队列比较特殊，不会保存提交的任务，直接新建一个线程来执行任务
