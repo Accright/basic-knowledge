@@ -203,3 +203,48 @@ ReadWriteLock的实现类。
 3. Lock加的锁可以中断，synchronized不可以中断
 4. Lock可以知道是否成功获得了锁
 5. Lock可以提高多个线程的读操作效率
+
+# volatile关键字
+## volatile的作用 简单来说主要有两个作用，一是修改某一个临界变量时使CPU中缓存的变量失效，其他线程必须从内存中重新读取；二是禁止指令的重排序，保证指令执行的有序性。注意，volatile是不能保证操作的原子性的，对于临界资源的互斥访问还是要使用synchronized关键字或lock锁。
+## volatile实现详解
+对于并发性操作，可能会出现缓存不一致问题，目前的解决方案主要有：1. 通过总线加Lock的方式 2. 通过缓存一致性协议 保证CPU中的缓存一致。
+保证多线程并发中，主要要解决以下问题：1. 原子性 2. 有序性 3.可见性
+volatile关键字可以解决有序性和可见性，但是对于原子性却无法保证。java中32位的赋值(或64位赋值)是原子性的，即指令一次性执行完毕，而其他操作不是，volatile关键字不能实现原子性，保证原子性还是需要synchronized或Lock锁。
+
+# ThreadLocal详解
+## ThreadLocal简介
+ThreadLocal可以简单理解为每个线程创建的内存工作副本，用于多线程并发时的数据库连接等，每个线程ThreadLocal内存区域都是互不影响的，其主要是通过获取当前线程，然后根据当前线程获取当前线程中的ThreadLocalMap类型的成员变量threadlocals,该类型是一个Map，其中的key就是一个ThreadLocal对象，value便是存入的值，获取时会根据当前的ThreadLocal对象去获取value，ThreadLocal和Thread是没有直接关系的，真正保存数据的是Thread的ThreadLocalMap成员变量。
+## 方法详解
+1. set(T value):使用currentThread()获取到当前线程，然后使用当前线程的threadlocals变量，如果不为空，初始化创建这个变量，源码如下：
+```java
+public void set(T value) {
+	Thread t = Thread.currentThread();
+	ThreadLocalMap map = getMap(t);
+	if (map != null)
+		map.set(this, value);
+	else
+		createMap(t, value);
+}
+```
+2. get():使用currentThread获取到当前线程，然后用ThreadLocal作为key，获取线程中threadlocals中变量的value，如果value为空，初始化value，该初始化可以由initialValue()重写。
+```java
+public T get() {
+	Thread t = Thread.currentThread();
+	ThreadLocalMap map = getMap(t);
+	if (map != null) {
+		ThreadLocalMap.Entry e = map.getEntry(this);
+		if (e != null)
+			return (T)e.value;
+	}
+	return setInitialValue();
+}
+```
+3. remove():移除当前值，相当于从Map中删除这个key对应的值。
+```java
+public void remove() {
+	ThreadLocalMap m = getMap(Thread.currentThread());
+	if (m != null)
+		m.remove(this);
+}
+```
+4. initialValue():初始化当前值，重写该方法，可以避免未set值时不返回null。
