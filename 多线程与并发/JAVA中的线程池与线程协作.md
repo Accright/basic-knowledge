@@ -57,6 +57,7 @@ ThreadPoolExcutor继承自AbstractExecutorService，而AbstractExecutorService�
 
 1. 线程池状态：使用volatile关键字声明的变量，当其他线程修改该值时可以直接被各个线程发现（可见性），状态主要有：RUNNING=0：运行状态；SHUTDOWN=1：暂停接受任务状态；STOP=2：停止接受新任务并终止当前任务；TERMINATED=3：所有线程都已销毁且任务队列为空时，标记为TERMINATED状态。
 2. 任务的执行：线程池中的重要成员变量，除了上述构造器中的变量之外，还有以下几个：
+
 1.ReentrantLock mainLock：线程池的状态锁，涉及到线程池状态改变的操作需要用该锁加锁
 
 2.HashSet<Worker> workers：工作任务的集合，Worker是一个内部类，封装了Runable任务
@@ -77,6 +78,7 @@ public void execute(Runnable command) {
 }
 ```
 其总体过程如下：
+
 1.如果当前线程池中的任务数量小于corePoolSize，创建一个新线程去执行任务
 
 2.如果线程数量超过corePoolSize，则将后续任务将加入缓存队列中，轮询该队列等待有空闲线程继续执行
@@ -95,3 +97,112 @@ public void execute(Runnable command) {
 2. Executors.newSingleThreadExecutor()：创建一个容量为1的线程池
 3. Executors.newFixedThreadPool(int)：创建一个固定长度的线程池
 线程池的大小一般通过CPU多少确定，可以创建1+CPU个，如果是IO密集型的任务，可以创建2N个，具体的值可以根据系统运行情况等进行调整。
+
+# Future、FutureTask、Callable
+## 简介
+上面说明了可以线程池可以使用submit方法获取返回值，事实上submit的返回值就是Future<T>泛型，参数可以是Callable或Runable任务，Callable是一个接口，里面主要是一个有返回值的方法：V call() throws Exception，不同于Runable接口，实现类在重写该方法时重写的是call方法，Future是一个接口，主要有以下几个方法：
+cancel():取消当前任务
+
+isCanceled：当前任务是否取消
+
+isDone:当前任务是否完成
+
+V get():获取任务的运行结果，这个方法会阻塞当前的线程，直到另一个线程执行完毕并返回结果
+
+V get(long timeout, TimeUnit unit)：阻塞指定时间获取结果，否则返回null
+
+也就是说，Futrue主要有这些功能：
+1. 中断任务执行
+2. 判断任务是否完成
+3. 获取任务的执行结果
+
+FutureTask是Future接口的一个唯一实现类，其主要实现了RunableFuture接口，而RunnableFuture又继承自Runable和Futrue。
+## 使用
+### 使用Callable和Futrue获取结果
+```java
+public class Test {
+    public static void main(String[] args) {
+        ExecutorService executor = Executors.newCachedThreadPool();
+        Task task = new Task();
+        Future<Integer> result = executor.submit(task);
+        executor.shutdown();
+         
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        }
+         
+        System.out.println("主线程在执行任务");
+         
+        try {
+            System.out.println("task运行结果"+result.get());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+         
+        System.out.println("所有任务执行完毕");
+    }
+}
+class Task implements Callable<Integer>{
+    @Override
+    public Integer call() throws Exception {
+        System.out.println("子线程在进行计算");
+        Thread.sleep(3000);
+        int sum = 0;
+        for(int i=0;i<100;i++)
+            sum += i;
+        return sum;
+    }
+}
+```
+### 使用FutrueTask和Callable获取结果
+```java
+public class Test {
+    public static void main(String[] args) {
+        //第一种方式
+        ExecutorService executor = Executors.newCachedThreadPool();
+        Task task = new Task();
+        FutureTask<Integer> futureTask = new FutureTask<Integer>(task);
+        executor.submit(futureTask);
+        executor.shutdown();
+         
+        //第二种方式，注意这种方式和第一种方式效果是类似的，只不过一个使用的是ExecutorService，一个使用的是Thread
+        /*Task task = new Task();
+        FutureTask<Integer> futureTask = new FutureTask<Integer>(task);
+        Thread thread = new Thread(futureTask);
+        thread.start();*/
+         
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        }
+         
+        System.out.println("主线程在执行任务");
+         
+        try {
+            System.out.println("task运行结果"+futureTask.get());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+         
+        System.out.println("所有任务执行完毕");
+    }
+}
+class Task implements Callable<Integer>{
+    @Override
+    public Integer call() throws Exception {
+        System.out.println("子线程在进行计算");
+        Thread.sleep(3000);
+        int sum = 0;
+        for(int i=0;i<100;i++)
+            sum += i;
+        return sum;
+    }
+}
+```
