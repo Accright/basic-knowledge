@@ -92,10 +92,13 @@ public void execute(Runnable command) {
 7. 线程池大小动态调整：动态更改corePoolSize和maximumPoolSize的值
 
 ## 线程池的使用
+
 上面说了不推荐直接使用ThreadExecutorPool的构造函数去直接创建线程池，在Executors中提供了几个静态方法，分别初始化好了一些参数，可以直接调用用来创建线程池：
+
 1. Executors.newCachedThreadPool()：创建一个容量为Integer.MAX_VALUE的线程池，任务存在SynchronousList中，会直接创建新线程运行
 2. Executors.newSingleThreadExecutor()：创建一个容量为1的线程池
 3. Executors.newFixedThreadPool(int)：创建一个固定长度的线程池
+
 线程池的大小一般通过CPU多少确定，可以创建1+CPU个，如果是IO密集型的任务，可以创建2N个，具体的值可以根据系统运行情况等进行调整。
 
 # Future、FutureTask、Callable
@@ -112,6 +115,7 @@ V get():获取任务的运行结果，这个方法会阻塞当前的线程，直
 V get(long timeout, TimeUnit unit)：阻塞指定时间获取结果，否则返回null
 
 也就是说，Futrue主要有这些功能：
+
 1. 中断任务执行
 2. 判断任务是否完成
 3. 获取任务的执行结果
