@@ -40,7 +40,7 @@ poll(long timeout, TimeUnit unit):从队首取出元素，如果队列为空，�
 ## 简介
 线程池是为了线程更好的复用线程执行任务，直接创建线程会降低系统效率，浪费系统资源。
 ## ThreadPoolExcutor类详解
-线程池的类主要是ThreadPoolExcutor类，通过它的构造方法，可以创建一个线程池（实际上不推荐直接这样创建）， 构造器中的主要参数如下：
+线程池的类主要是ThreadPoolExcutor类，通过它的构造方法，可以创建一个线程池（实际上不推荐直接这样创建，当然阿里的代码检查里是推荐直接这样创建线程池的，因为使用Executors创建的线程池，有可能会导致OOM（创建无限制的线程或队列占用过大的内存））， 构造器中的主要参数如下：
 1. corePoolSize：线程池的核心线程大小，也是默认的执行任务的线程的数量大小，当线程数达到corePoolSize时，再来的任务便会进入任务阻塞队列
 2. maximumPoolSize: 线程池的最大线程数，当线程数达到corePoolSize，而且任务的队列已满时，便会创建新的线程直接执行新的任务，如果线程达到maximumPoolSize，便会拒绝新的任务
 3. keepAliveTime：超过corePoolSize创建的非核心线程，在keepAliveTime之后便会销毁。调用allowCoreThreadTimeOut方法之后，对于核心线程也会应用该参数，直到线程池中无线程。
@@ -93,7 +93,7 @@ public void execute(Runnable command) {
 
 ## 线程池的使用
 
-上面说了不推荐直接使用ThreadExecutorPool的构造函数去直接创建线程池，在Executors中提供了几个静态方法，分别初始化好了一些参数，可以直接调用用来创建线程池：
+上面说了不推荐直接使用ThreadExecutorPool的构造函数去直接创建线程池（不是很绝对，阿里就不推荐这样使用，但这样使用足够简单而且一般场景够用），在Executors中提供了几个静态方法，分别初始化好了一些参数，可以直接调用用来创建线程池：
 
 1. Executors.newCachedThreadPool()：创建一个容量为Integer.MAX_VALUE的线程池，任务存在SynchronousList中，会直接创建新线程运行
 2. Executors.newSingleThreadExecutor()：创建一个容量为1的线程池
