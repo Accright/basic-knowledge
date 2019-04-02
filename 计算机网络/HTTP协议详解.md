@@ -49,3 +49,5 @@ HTTP响应头由以下几部分构成：状态行、响应头、空行、响应�
 ![响应头参数](https://springboot-blog-1256194683.cos.ap-beijing.myqcloud.com/%E5%93%8D%E5%BA%94%E5%A4%B4%E6%96%87%E4%BB%B6.png)
 
 # HTTPS协议详解
+HTTPS协议详解可见如下：
+![HTTPS协议](https://accright.com/article/60)
